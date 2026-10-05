@@ -14,6 +14,9 @@
  *
  * 「명단」 탭 A열(성명), B열(소속교)에 참가자 명단을 붙여넣으면 「현황」 탭에 미제출자가 나온다.
  * 대조는 성명 기준이다.
+ *
+ * 같은 기기에서 다시 제출하면 제출ID가 같으므로 새 행을 만들지 않고 기존 행을 덮어쓴다.
+ * 「제출 횟수」 열에 몇 번째 제출인지 남는다.
  */
 
 const SHEET_NAME = "제출";
@@ -22,24 +25,24 @@ const ROSTER_NAME = "명단";
 
 /* 열 순서를 바꾸면 기존 행과 어긋난다. 새 항목은 맨 뒤에 붙인다 */
 const COLUMNS = [
-  ["ts",        "제출시각"],
+  ["ts",        "제출시각(최종)"],
   ["gi",        "기수"],
   ["name",      "성명"],
   ["school",    "소속교"],
   ["stamps",    "스탬프"],
   ["total",     "전체 관"],
-  ["boothN",    "부스 수"],
-  ["booths",    "들른 부스"],
-  ["rates",     "학교 적용 가능성"],
+  ["boothN",    "방문 부스 수"],
+  ["booths",    "방문 부스"],
+  ["rates",     "학교 적용가능성"],
   ["memos",     "관별 메모"],
-  ["take1",     "가져갈 기술 1"],
-  ["take2",     "가져갈 기술 2"],
-  ["take3",     "가져갈 기술 3"],
+  ["take",      "가져갈 기술"],
   ["staff",     "교직원에게 한 문장"],
   ["oneyear",   "1년 내 들어올 기술·이유"],
   ["ua",        "기기"],
   ["visited",   "관람한 관(코드)"],
-  ["rateCodes", "적용 가능성(코드)"]
+  ["rateCodes", "적용가능성(코드)"],
+  ["sid",       "제출ID"],
+  ["rev",       "제출 횟수"]
 ];
 
 /* index.html의 HALLS 순서와 같아야 한다 */
@@ -67,8 +70,16 @@ function doPost(e) {
 
     const sheet = getSheet();
     data.ts = new Date();
-    sheet.appendRow(COLUMNS.map(([key]) => clean(data[key])));
-    return reply({ ok: true });
+    const at = data.sid ? findRow(sheet, String(data.sid)) : 0;
+    if (at) {
+      const revCol = COLUMNS.findIndex(([k]) => k === "rev") + 1;
+      data.rev = (Number(sheet.getRange(at, revCol).getValue()) || 1) + 1;
+      sheet.getRange(at, 1, 1, COLUMNS.length).setValues([COLUMNS.map(([key]) => clean(data[key]))]);
+    } else {
+      data.rev = 1;
+      sheet.appendRow(COLUMNS.map(([key]) => clean(data[key])));
+    }
+    return reply({ ok: true, updated: !!at });
   } catch (err) {
     return reply({ ok: false, error: String(err && err.message || err) });
   } finally {
@@ -94,10 +105,20 @@ function getSheet() {
   const labels = COLUMNS.map(([, label]) => label);
   const head = sheet.getRange(1, 1, 1, labels.length);
   if (head.getValues()[0].join("\u0001") !== labels.join("\u0001")) {
+    const extra = sheet.getLastColumn() - labels.length;
+    if (extra > 0) sheet.getRange(1, labels.length + 1, 1, extra).clearContent();
     head.setValues([labels]).setFontWeight("bold");
     sheet.setFrozenRows(1);
   }
   return sheet;
+}
+
+function findRow(sheet, sid) {
+  const last = sheet.getLastRow();
+  if (last < 2) return 0;
+  const col = COLUMNS.findIndex(([k]) => k === "sid") + 1;
+  const hit = sheet.getRange(2, col, last - 1, 1).createTextFinder(sid).matchEntireCell(true).findNext();
+  return hit ? hit.getRow() : 0;
 }
 
 function getRoster() {
@@ -137,19 +158,19 @@ function buildDashboard() {
 
   const summary = [
     ["제출 인원(성명 기준, 중복 제외)", `=IF(COUNTA(${name})=0,0,COUNTUNIQUE(FILTER(${name},${name}<>"")))`],
-    ["총 제출 건수(다시 제출 포함)",     `=COUNTA(${name})`],
+    ["제출 행 수(기기 기준)",            `=COUNTA(${name})`],
     ["명단 인원",                        `=COUNTA(${rName})`],
     ["미제출 인원",                      `=IF(B5=0,"명단 탭 입력 필요",SUMPRODUCT((${rName}<>"")*ISNA(MATCH(${rName},${name},0))))`],
     ["마지막 제출",                      `=IF(B4=0,"",MAX(${ts}))`],
     ["평균 스탬프(10곳 중)",             `=IFERROR(ROUND(AVERAGE(${stamps}),1),"")`],
-    ["평균 들른 부스 수",                `=IFERROR(ROUND(AVERAGE(${booth}),1),"")`]
+    ["평균 방문 부스 수",                `=IFERROR(ROUND(AVERAGE(${booth}),1),"")`]
   ];
   sh.getRange(3, 1, summary.length, 2).setValues(summary);
   sh.getRange("B7").setNumberFormat("m/d hh:mm");
   sh.getRange("A3:A9").setFontWeight("bold");
 
   const top = 11;
-  sh.getRange(top, 1, 1, 5).setValues([["특별관", "관람", "적용 상", "적용 중", "적용 하"]])
+  sh.getRange(top, 1, 1, 5).setValues([["특별관", "관람", "적용가능성 상", "적용가능성 중", "적용가능성 하"]])
     .setFontWeight("bold").setBackground("#EEEEEE");
   const rows = HALLS.map((h, i) => {
     const code = String(i + 1).padStart(2, "0");
@@ -165,7 +186,7 @@ function buildDashboard() {
   );
 
   sh.setColumnWidth(1, 260);
-  sh.setColumnWidths(2, 4, 80);
+  sh.setColumnWidths(2, 4, 100);
   sh.setColumnWidth(7, 110);
   sh.setColumnWidth(8, 180);
   sh.setFrozenRows(1);

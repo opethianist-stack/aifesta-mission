@@ -70,7 +70,8 @@ details.note[open]>summary{border-bottom:1px solid var(--line-soft)}
 .contacts a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:50px;padding:0 14px;
   border-radius:10px;border:1px solid var(--accent-line);background:var(--accent-dim);color:var(--text);
   font-size:16px;font-weight:700;text-decoration:none}
-.contacts a span{color:var(--muted);font-weight:600;font-size:15px}
+.contacts a span{color:var(--text-2);font-weight:600;font-size:15px}
+.contacts a b{flex:none;color:var(--accent);font-weight:800}
 .done-contacts{margin:0 0 16px}
 .done-contacts .org{margin:0 0 8px!important}
 
@@ -206,9 +207,9 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
     <div class="note-body">
       <ol>
         <li>특별관을 둘러본 뒤 <b>완료</b>를 누르면 스탬프가 찍힙니다.</li>
-        <li><b>기록</b>을 열어 들른 부스를 누르고, 학교 적용 가능성(상·중·하)과 한 줄 메모를 남기십시오. 부스나 적용 가능성을 고르면 스탬프도 함께 찍힙니다.</li>
+        <li><b>기록</b>을 열어 방문 부스를 누르고, 학교 적용가능성(상·중·하)과 한 줄 메모를 남기십시오. 부스나 적용가능성을 고르면 스탬프도 함께 찍힙니다. 모든 항목은 선택이며 비워 두어도 됩니다.</li>
         <li>목록에 없는 부스는 이름을 적어 <b>추가</b>하십시오.</li>
-        <li>관람을 마치면 아래 <b>마무리 문항</b> 3개를 쓰고 제출하십시오.</li>
+        <li>관람을 마치면 아래 <b>마무리 문항</b> 3개를 쓰고 제출하십시오. 다시 제출하면 이전 제출 내용이 새 내용으로 바뀝니다.</li>
       </ol>
       <p>입력한 내용은 이 기기에 바로 저장됩니다. 전시장 통신이 끊기거나 화면을 닫아도 다시 열면 이어서 쓰실 수 있습니다.</p>
     </div>
@@ -217,9 +218,9 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
   <details class="note" id="map-box">
     <summary>전시장 배치도</summary>
     <div class="note-body">
-      <a href="floorplan.jpg" target="_blank" rel="noopener"><img class="map" src="floorplan.jpg" width="1200" height="685" alt="AI Festa 26 코엑스 C홀 배치도. 왼쪽에 국방 AI, K-AI 파트너십, 피지컬 AI, AI 반도체, 양자, 공공기관 특별관, 가운데에 독자 파운데이션 모델, AI 인프라, 메인 스테이지, AI 경진대회, 오른쪽에 AI 트렌드관과 스폰서 구역이 있다."></a>
-      <p class="cap">참가 안내 브로슈어 기준이며 현장 배치와 다를 수 있습니다. 배치도를 누르면 크게 열립니다.</p>
-      <p><b>추천 동선</b> — 왼쪽 구역에 6개 관이 모여 있습니다. 국방 AI → K-AI 파트너십 → 피지컬 AI → AI 반도체 → 양자 → 공공기관 순으로 돈 뒤, 가운데(파운데이션 모델 → AI 인프라 → AI 경진대회)로 이동하면 되돌아가는 길이 적습니다.</p>
+      <a href="boothmap.jpg" target="_blank" rel="noopener"><img class="map" src="boothmap.jpg" width="1037" height="585" alt="AI Festa 26 코엑스 C홀 부스 배치도. 입구는 오른쪽 아래, 출구는 왼쪽 아래다. 오른쪽에 피지컬 AI·로봇(P), 오른쪽 위에 에이전틱 AI+X(X)와 K-AI 파트너십(K), 가운데에 메인무대와 AI 경진대회(CH), 위쪽 가운데에 독자 파운데이션 모델(FD), 왼쪽 위부터 AI 반도체(S), AI 인프라(I), 국방 AI(D), 보안·양자(Q), 왼쪽 아래에 정부특별관(G)이 있다."></a>
+      <p class="cap">공식 홈페이지 부스 배치도 기준입니다. 배치도를 누르면 크게 열립니다. 각 관의 부스 번호(예: D-03)는 배치도의 번호와 같습니다.</p>
+      <p><b>추천 동선</b> — 입구(오른쪽 아래)에서 출구(왼쪽 아래)로 한 방향으로 돌 수 있습니다. 피지컬 AI(P) → 에이전틱 AI+X(X) → K-AI 파트너십(K) → AI 경진대회(CH) → 파운데이션 모델(FD) → AI 반도체(S) → AI 인프라(I) → 국방 AI(D) → 보안·양자(Q) → 정부특별관(G) 순서입니다.</p>
     </div>
   </details>
 
@@ -239,10 +240,8 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
     <p>관별 기록과 함께 제출됩니다.</p>
 
     <div class="f">
-      <span class="lb" id="lb-take">1. 학교에 가져갈 기술 3가지</span>
-      <input class="in" id="f-take1" type="text" aria-labelledby="lb-take" placeholder="첫째">
-      <input class="in" id="f-take2" type="text" aria-labelledby="lb-take" placeholder="둘째">
-      <input class="in" id="f-take3" type="text" aria-labelledby="lb-take" placeholder="셋째">
+      <label for="f-take">1. 학교에 가져갈 기술 1가지</label>
+      <input class="in" id="f-take" type="text" placeholder="오늘 본 것 중 하나">
     </div>
     <div class="f"><label for="f-staff">2. 교직원에게 한 문장으로 설명한다면</label>
       <textarea class="in" id="f-staff" rows="3" placeholder="오늘 본 것을 교직원 회의에서 한 문장으로 전한다면"></textarea>
@@ -317,62 +316,74 @@ const INFO = {
 };
 
 /* 문의처 — tel은 전화, url은 외부 링크로 나온다 */
-const CONTACT_ORG = "(사)한국능률협회 사무국";
 const CONTACTS = [
-  {label:"전화", text:"010-4823-1396", tel:"010-4823-1396"},
-  {label:"카카오톡", text:"오픈채팅 열기", url:"https://open.kakao.com/o/s9dKGiIi"}
+  {label:"초등 인솔 · 신슬기 팀장", text:"010-8390-8190", tel:"010-8390-8190"},
+  {label:"중등 인솔 · 서보경 위원", text:"010-7919-5810", tel:"010-7919-5810"},
+  {label:"(사)한국능률협회 사무국", text:"010-4823-1396", tel:"010-4823-1396"},
+  {label:"카카오톡 오픈채팅", text:"열기", url:"https://open.kakao.com/o/s9dKGiIi"}
 ];
 
-/* 특별관 — loc: 플로어맵 위치 힌트, b: 사전 확인된 참가 부스(공개 보도 기준). 확정 시 추가한다 */
+/* 특별관 — loc: 부스 배치도 위치 힌트, b: 공식 부스 배치도의 부스(번호 + 기업·기관명) */
 const HALLS = [
-  {ko:"AI 경진대회 특별관", en:"AI Competition", loc:"가운데 · 메인 스테이지 바로 아래",
-   d:"정부·공공 AI 경진대회의 수상작과 출품 기술을 모아 보여 주는 관입니다.",
+  {ko:"AI 경진대회 특별관", en:"AI Competition", loc:"가운데 · 메인무대 바로 아래(CH-01)와 그 오른쪽(CH-02)",
+   d:"AI Champion·AI Rookie 등 정부 AI 경진대회 참가팀의 결과물과 고교 AI·SW 챌린지를 보여 주는 관입니다.",
    q:"우리 학교 학생이 이런 대회에 도전하게 하려면, 학교가 먼저 마련해야 할 것은 무엇입니까?",
-   b:[]},
-  {ko:"국방 AI 특별관", en:"Defense AI", loc:"왼쪽 위 · 카페테리아 오른쪽",
+   b:["CH-01 AI Champion·AI Rookie 팀","CH-02 AI Champion·고교 AI·SW 챌린지","CH-02 한국과학창의재단 체험존"]},
+  {ko:"국방 AI 특별관", en:"Defense AI", loc:"왼쪽 · AI 인프라 특별관 바로 아래",
    d:"감시·분석·지휘 지원 등 국방 분야에 적용되는 AI 기술을 소개합니다.",
    q:"생명·안전과 직결된 판단에 AI가 쓰이는 사례를 학생 AI 윤리교육에서 어떻게 다루시겠습니까?",
-   b:["코난테크놀로지"]},
-  {ko:"독자 AI 파운데이션 모델 특별관", en:"Sovereign Foundation Model", loc:"왼쪽 위 · 국방 AI관과 메인 스테이지 사이",
-   d:"정부 '독자 AI 파운데이션 모델' 프로젝트에 참여한 정예팀의 한국형 거대 AI 모델과 활용 사례를 전시합니다.",
+   b:["D-01 솔트룩스","D-02 편진","D-03 코난테크놀로지"]},
+  {ko:"독자 AI 파운데이션 모델 특별관", en:"Sovereign Foundation Model", loc:"위쪽 · 메인무대 왼쪽 회색 구역(FD-01)",
+   d:"정부 '독자 AI 파운데이션 모델' 프로젝트 정예팀의 한국형 거대 AI 모델과 활용 사례를 전시합니다.",
    q:"학교 업무와 수업에 생성형 AI를 들인다면, 어떤 기준으로 모델과 서비스를 고르시겠습니까?",
-   b:["LG AI연구원","SK텔레콤","업스테이지"]},
-  {ko:"정부특별관", en:"Government Pavilion", loc:"왼쪽 아래 · 배치도의 '공공기관 특별관'",
+   b:["FD-01 LG AI연구원","FD-01 SK텔레콤","FD-01 업스테이지"]},
+  {ko:"정부특별관", en:"Government Pavilion", loc:"왼쪽 아래 · 출구 쪽(G-01~G-13)",
    d:"정부와 공공기관의 AI 정책, 지원 사업, 공공 서비스 적용 사례를 안내합니다.",
    q:"공공 조직의 AI 도입 사례 중 학교 행정에 옮겨 볼 만한 것은 무엇이었습니까?",
-   b:[]},
-  {ko:"AI 인프라 특별관", en:"AI Infrastructure", loc:"왼쪽 · 파운데이션 모델관 바로 아래",
-   d:"데이터센터, 클라우드, GPU 등 AI를 돌리는 기반 설비와 서비스를 다룹니다.",
+   b:["G-01 한국과학기술연구원","G-02 올포랜드","G-03 신라왕경 디지털 재현사업","G-04 NIA 특별전시관(Wizcore·SK브로드밴드·KT)",
+      "G-05 한국남부발전","G-06 한국인터넷진흥원","G-07 한국문화정보원","G-08 한국전자통신연구원","G-09 한국데이터산업진흥원",
+      "G-10 한국방송통신전파진흥원 공동관","G-11 부산정보산업진흥원","G-12 한국지능정보사회진흥원","G-13 정보통신기획평가원"]},
+  {ko:"AI 인프라 특별관", en:"AI Infrastructure", loc:"왼쪽 위 · AI 반도체 특별관 바로 아래",
+   d:"데이터센터, 클라우드, GPU 서버 등 AI를 돌리는 기반 설비와 서비스를 다룹니다.",
    q:"학교의 AI 활용을 늘린다면 기기·네트워크·클라우드 중 어디부터 보강하시겠습니까?",
-   b:[]},
-  {ko:"K-AI 파트너십 특별관", en:"K-AI Partnership", loc:"왼쪽 · 국방 AI관 바로 아래",
+   b:["I-01 망고부스트","I-02 엠키스코어","I-03 AWS | 스마일샤크","I-04 베이넥스 & HPE","I-05 그래파이"]},
+  {ko:"K-AI 파트너십 특별관", en:"K-AI Partnership", loc:"오른쪽 위 · 메인무대 오른쪽",
    d:"국내 AI 기업과 국내외 기관이 함께 만든 협력 사례를 소개합니다.",
    q:"지역 기업·대학과 손잡는다면, 우리 학교는 무엇을 내놓고 무엇을 얻을 수 있겠습니까?",
-   b:[]},
-  {ko:"피지컬 AI & 로봇 특별관", en:"Physical AI & Robot", loc:"왼쪽 · K-AI 파트너십관 바로 아래",
-   d:"로봇, 자율 이동체 등 현실 공간에서 보고 판단하고 움직이는 AI를 시연합니다.",
+   b:["K-01 데이터얼라이언스","K-02 에코피스","K-03 플리토","K-04 래블업","K-05 심시스글로벌",
+      "K-06 핀플로우","K-07 알파코드","K-08 씽크포비엘","K-09 아이디비"]},
+  {ko:"피지컬 AI & 로봇 특별관", en:"Physical AI & Robot", loc:"오른쪽 · 입구에서 위쪽으로(P-01~P-06)",
+   d:"로봇, 자율주행 등 현실 공간에서 보고 판단하고 움직이는 AI를 시연합니다.",
    q:"오전 피지컬 AI 세션과 비교해, 학교 공간(급식·안전·돌봄 등) 중 어디부터 시험해 보시겠습니까?",
-   b:["LG전자","KAIST","서울대학교","로보티즈","크라우드웍스","알체라"]},
-  {ko:"보안 & 양자 특별관", en:"Security & Quantum", loc:"왼쪽 아래 구석 · 배치도의 '양자 특별관'",
+   b:["P-01 이스트소프트","P-02 라이드플럭스","P-03 두산로보틱스","P-04 롯데이노베이트",
+      "P-05 IITP 월드모델 특별관(LG전자·알체라·크라우드웍스·로보티즈·KAIST·서울대)",
+      "P-06 피지컬 AI 특별관(NC AI·다임테크놀로지·리얼월드·메가존·페르소나에이아이·인이지)"]},
+  {ko:"보안 & 양자 특별관", en:"Security & Quantum", loc:"왼쪽 · 국방 AI 특별관 오른쪽",
    d:"AI 보안, 개인정보 보호, 양자 암호·양자 컴퓨팅 기술을 다룹니다.",
    q:"학생·교직원 정보를 지키기 위해 AI 도입 전에 학교가 점검해야 할 것은 무엇입니까?",
-   b:[]},
-  {ko:"AI 반도체 특별관", en:"AI Semiconductor", loc:"왼쪽 · 피지컬 AI관 바로 아래",
-   d:"AI 연산에 특화된 NPU 등 국산 AI 반도체와 적용 사례를 전시합니다.",
+   b:["Q-01 한국표준과학연구원","Q-02 한국과학기술정보연구원","Q-03 충북양자연구센터","Q-04 큐심플러스","Q-05 오리엔텀",
+      "Q-06 미래양자융합포럼","Q-07 큐노바","Q-08 이와이엘","Q-09 마크애니","Q-10 스마트엠투엠",
+      "Q-11 휴네시온","Q-12 에브리존","Q-13 옥타코","Q-14 지니언스","Q-15 안랩"]},
+  {ko:"AI 반도체 특별관", en:"AI Semiconductor", loc:"왼쪽 위 · 카페테리아 아래",
+   d:"AI 연산에 특화된 NPU 등 국산 AI 반도체와 이를 넣은 기기를 전시합니다.",
    q:"이 산업을 진로교육과 잇는다면 어떤 학생 활동을 기획하시겠습니까?",
-   b:[]},
-  {ko:"에이전틱 AI+X 특별관", en:"Agentic AI + X", loc:"배치도에 표시 없음 · 현장 안내판 확인",
-   d:"스스로 계획하고 도구를 써서 일을 처리하는 AI 에이전트를 산업별로 적용한 사례를 보여 줍니다.",
+   b:["S-01 딥엑스","S-02 모빌린트","S-03 파네시아","S-04 디노티시아",
+      "S-05 AX 디바이스 특별관(쿠쿠홈시스·피앤씨솔루션·아날로그플러스 등)","S-06 양자AI 융합센터"]},
+  {ko:"에이전틱 AI+X 특별관", en:"Agentic AI + X", loc:"오른쪽 맨 위 · K-AI 파트너십 특별관 오른쪽",
+   d:"스스로 계획하고 도구를 써서 일을 처리하는 AI 에이전트를 업무·산업별로 적용한 사례를 보여 줍니다.",
    q:"교무·행정 업무 중 AI 에이전트에게 먼저 맡겨 보고 싶은 일은 무엇입니까?",
-   b:["와이즈넛"]}
+   b:["X-01 헥토이노베이션","X-02 나라원시스템","X-03 달파","X-04 원더무브","X-05 뉴엔AI",
+      "X-06 데이터사이언스랩","X-07 건강보험공단","X-08 교림소프트","X-09 이노에이엑스","X-10 씨에스리",
+      "X-11 인젠트","X-12 팝콘사","X-13 와이즈넛","X-14 코오롱베니트","X-15 인핸스",
+      "X-16 지란지교소프트","X-17 엔에이치엔","X-18 유라클","X-19 더존비즈온"]}
 ];
 const TOTAL = HALLS.length;
 const RATES = ["상","중","하"];
-const FORM_IDS = ["f-take1","f-take2","f-take3","f-staff","f-oneyear","f-name","f-school"];
+const FORM_IDS = ["f-take","f-staff","f-oneyear","f-name","f-school"];
 
 /* 저장소 — localStorage 불가 시 메모리로 자동 전환 */
-const KEY="aifesta2026-p3", mem={};
-const blank=()=>({done:[],memo:{},booths:{},rate:{},form:{}});
+const KEY="aifesta2026-v2", mem={};
+const blank=()=>({done:[],memo:{},booths:{},rate:{},form:{},sid:""});
 const store={
   get(){ try{const v=localStorage.getItem(KEY);return v?JSON.parse(v):(mem[KEY]||blank());}
          catch(e){return mem[KEY]||blank();} },
@@ -383,6 +394,12 @@ const b0=blank();
 for(const k in b0){ if(!state[k]||typeof state[k]!==typeof b0[k]||Array.isArray(state[k])!==Array.isArray(b0[k])) state[k]=b0[k]; }
 
 const $=id=>document.getElementById(id);
+/* 제출 ID — 같은 기기에서 다시 제출하면 시트의 같은 행을 덮어쓴다 */
+function newSid(){
+  try{ if(crypto.randomUUID) return crypto.randomUUID(); }catch(e){}
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+}
+if(!state.sid){ state.sid=newSid(); store.set(state); }
 const pad=n=>String(n).padStart(2,"0");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
@@ -398,15 +415,15 @@ $("done-gather").innerHTML=gatherHTML;
 const contactLinks=CONTACTS.map(c=>{
   const href=c.tel?`tel:${c.tel.replace(/[^0-9+]/g,"")}`:c.url;
   const ext=c.url?' target="_blank" rel="noopener"':"";
-  return `<a href="${esc(href)}"${ext}><span>${esc(c.label)}</span>${esc(c.text)}</a>`;
+  return `<a href="${esc(href)}"${ext}><span>${esc(c.label)}</span><b>${esc(c.text)}</b></a>`;
 }).join("");
 if(CONTACTS.length){
   $("contact-box").hidden=false;
   $("gather-note").innerHTML=gatherHTML;
-  $("contact-org").textContent=`문의 · ${CONTACT_ORG}`;
+  $("contact-org").textContent="문의처";
   $("contacts").innerHTML=contactLinks;
   const d=document.createElement("div"); d.className="done-contacts";
-  d.innerHTML=`<p class="org">문의 · ${esc(CONTACT_ORG)}</p><div class="contacts">${contactLinks}</div>`;
+  d.innerHTML=`<p class="org">문의처</p><div class="contacts">${contactLinks}</div>`;
   $("done-gather").after(d);
 }
 
@@ -426,7 +443,7 @@ function chipsHTML(i){
 }
 function tagsHTML(i){
   const nb=picked(i).length, r=state.rate[i];
-  return `<span class="tag">${nb?`부스 ${nb}`:""}</span><span class="tag">${r?`적용 ${r}`:""}</span>`;
+  return `<span class="tag">${nb?`부스 ${nb}`:""}</span><span class="tag">${r?`적용가능성 ${r}`:""}</span>`;
 }
 
 function card(i){
@@ -450,16 +467,16 @@ function card(i){
     </div>
     <div class="memo${has?" open":""}">
       <div class="blk">
-        <p class="blabel">들른 부스 <span>— 누르면 표시됩니다</span></p>
+        <p class="blabel">방문 부스 <span>— 누르면 표시됩니다</span></p>
         <div class="chips">${chipsHTML(i)}</div>
         <div class="badd">
-          <input class="in" type="text" enterkeyhint="done" maxlength="40" aria-label="${esc(h.ko)} 부스 직접 추가" placeholder="기억에 남은 기업·제품명">
+          <input class="in" type="text" enterkeyhint="done" maxlength="40" aria-label="${esc(h.ko)} 부스 직접 추가" placeholder="기억에 남은 부스(기업)명">
           <button type="button" data-act="add">추가</button>
         </div>
       </div>
       <div class="blk">
-        <p class="blabel">학교 적용 가능성</p>
-        <div class="rate" role="radiogroup" aria-label="${esc(h.ko)} 학교 적용 가능성">
+        <p class="blabel">학교 적용가능성 <span>— 선택</span></p>
+        <div class="rate" role="radiogroup" aria-label="${esc(h.ko)} 학교 적용가능성">
           ${RATES.map(r=>`<button type="button" role="radio" data-act="rate" data-v="${r}" class="${state.rate[i]===r?"on":""}" aria-checked="${state.rate[i]===r}">${r}</button>`).join("")}
         </div>
       </div>
@@ -573,7 +590,7 @@ const toast=m=>{const t=$("toast");t.textContent=m;t.classList.add("show");
 function hallLine(i){
   const parts=[];
   if(picked(i).length) parts.push(`부스 ${picked(i).join(", ")}`);
-  if(state.rate[i]) parts.push(`적용 ${state.rate[i]}`);
+  if(state.rate[i]) parts.push(`적용가능성 ${state.rate[i]}`);
   if(state.memo[i]) parts.push(state.memo[i]);
   return parts.join(" / ");
 }
@@ -595,7 +612,7 @@ $("copy-memo").addEventListener("click",async()=>{
 
 $("reset").addEventListener("click",()=>{
   if(!confirm("스탬프, 관별 기록, 마무리 문항을 모두 지웁니다. 계속하시겠습니까?")) return;
-  state=blank(); store.set(state); location.reload();
+  const sid=state.sid; state=blank(); state.sid=sid; store.set(state); location.reload();
 });
 
 /* ── 제출 ── */
@@ -619,7 +636,7 @@ $("send").addEventListener("click",async()=>{
   msg.className="send-msg"; msg.textContent="";
 
   const checks=[
-    ["f-take1", !val("f-take1")&&!val("f-take2")&&!val("f-take3")],
+    ["f-take", !val("f-take")],
     ["f-staff", !val("f-staff")],
     ["f-oneyear", !val("f-oneyear")],
     ["f-name", !val("f-name")],
@@ -629,7 +646,7 @@ $("send").addEventListener("click",async()=>{
   checks.forEach(([id,bad])=>{ $(id).classList.toggle("bad",bad); if(bad&&!firstBad) firstBad=id; });
   if(firstBad){
     msg.classList.add("err");
-    msg.textContent="마무리 문항 3개(1번은 1개 이상)와 성명, 소속교를 채워 주십시오.";
+    msg.textContent="마무리 문항 3개와 성명, 소속교를 채워 주십시오.";
     $(firstBad).focus();
     return;
   }
@@ -657,13 +674,12 @@ $("send").addEventListener("click",async()=>{
     booths:  hallsCol(i=>picked(i).join(", ")),
     rates:   hallsCol(i=>state.rate[i]||""),
     memos:   hallsCol(i=>state.memo[i]||""),
-    take1:   val("f-take1"),
-    take2:   val("f-take2"),
-    take3:   val("f-take3"),
+    take:    val("f-take"),
     staff:   val("f-staff"),
     oneyear: val("f-oneyear"),
     ua:      navigator.userAgent,
     visited: state.done.slice().sort((a,b)=>a-b).map(i=>`[${pad(i+1)}]`).join(""),
+    sid:     state.sid,
     rateCodes: HALLS.map((_,i)=>state.rate[i]?`[${pad(i+1)}${state.rate[i]}]`:"").join("")
   };
 
@@ -674,7 +690,9 @@ $("send").addEventListener("click",async()=>{
     const out=await res.json();
     if(!out||out.ok!==true) throw new Error(out&&out.error?out.error:"저장 실패");
     state.sent=true; store.set(state);
-    showDone(`${payload.name} 교장선생님, 특별관 ${payload.stamps}/${payload.total}곳 기록과 함께 접수되었습니다.`);
+    showDone(out.updated
+      ? `${payload.name} 교장선생님, 이전 제출 내용을 새 내용으로 바꿨습니다. (특별관 ${payload.stamps}/${payload.total}곳)`
+      : `${payload.name} 교장선생님, 특별관 ${payload.stamps}/${payload.total}곳 기록과 함께 접수되었습니다.`);
   }catch(err){
     msg.classList.add("err");
     msg.textContent="제출에 실패했습니다. 입력한 내용은 이 기기에 저장되어 있으니, 통신이 잡히는 곳(전시장 입구·로비)에서 다시 눌러 주십시오. 계속 실패하면 위쪽 「집결 · 문의처」로 연락해 주십시오.";
