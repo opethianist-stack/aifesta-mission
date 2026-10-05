@@ -56,6 +56,10 @@ button:focus-visible,summary:focus-visible,textarea:focus-visible,a:focus-visibl
 .eyebrow i{width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);display:inline-grid;place-items:center}
 .eyebrow i::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .course{margin:-8px 0 16px;font-size:15px;color:var(--muted)}
+.inapp{margin:16px 0 0;padding:14px 16px;border-radius:12px;border:1px solid var(--accent-line);background:var(--accent-dim);font-size:15px;color:var(--text-2)}
+.inapp b{color:var(--text)}
+.inapp a{display:flex;align-items:center;justify-content:center;min-height:48px;margin-top:10px;border-radius:10px;
+  background:var(--accent);color:var(--on-accent);font-size:16px;font-weight:800;text-decoration:none}
 .masthead h1{font-size:34px;font-weight:900;letter-spacing:-.035em;line-height:1.2;margin:0 0 14px}
 .facts{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 14px;
   padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
@@ -231,6 +235,7 @@ textarea::placeholder,.in::placeholder{color:#66726B}
 </div>
 
 <div class="wrap">
+  <div class="inapp" id="inapp" hidden></div>
 
   <header class="masthead">
     <p class="eyebrow"><i aria-hidden="true"></i>AI WEEK 2026 – AI FESTA</p>
@@ -480,6 +485,26 @@ const store={
 let state=store.get();
 const b0=blank();
 for(const k in b0){ if(!state[k]||typeof state[k]!==typeof b0[k]||Array.isArray(state[k])!==Array.isArray(b0[k])) state[k]=b0[k]; }
+
+/* 카카오톡 안에서 열린 경우 — 기록 전이면 기본 브라우저로 넘긴다.
+   카톡 안 화면과 브라우저는 저장 공간이 달라서, 이미 기록이 있으면 자동으로 넘기지 않는다 */
+(function(){
+  if(!/KAKAOTALK/i.test(navigator.userAgent)) return;
+  const ext="kakaotalk://web/openExternal?url="+encodeURIComponent(location.href);
+  const started=state.sent||state.done.length||Object.keys(state.memo).length||Object.keys(state.booths).length
+    ||Object.keys(state.rate).length||Object.values(state.form).some(v=>String(v||"").trim());
+  let tried=false;
+  try{ tried=sessionStorage.getItem("ext-tried")==="1"; }catch(e){}
+  const box=document.getElementById("inapp");
+  box.hidden=false;
+  box.innerHTML=started
+    ? `<b>카카오톡 안에서 열려 있습니다.</b> 이미 이 화면에 기록하신 내용이 있어 그대로 이어서 쓰시면 됩니다. 브라우저로 옮기면 지금까지의 기록은 따라가지 않습니다.<a href="${ext}">그래도 브라우저로 열기</a>`
+    : `<b>브라우저로 여는 중입니다.</b> 브라우저가 열리면 그쪽에서 진행해 주십시오. 열리지 않으면 아래 버튼을 누르시거나, 이 화면에서 그대로 진행하셔도 됩니다.<a href="${ext}">브라우저로 열기</a>`;
+  if(!started&&!tried){
+    try{ sessionStorage.setItem("ext-tried","1"); }catch(e){}
+    location.href=ext;
+  }
+})();
 
 const $=id=>document.getElementById(id);
 /* 제출 ID — 같은 기기에서 다시 제출하면 시트의 같은 행을 덮어쓴다 */
