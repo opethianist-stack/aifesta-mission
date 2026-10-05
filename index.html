@@ -103,6 +103,10 @@ details.note[open]>summary{border-bottom:1px solid var(--line-soft)}
 .route button .ck{flex:none;font-size:14px;font-weight:700;color:var(--stamp)}
 /* 부스 찾기 */
 .find{margin:16px 0 8px}
+.dl{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:52px;margin:12px 0 0;padding:0 14px;
+  border-radius:10px;border:1px solid var(--accent-line);background:var(--accent-dim);color:var(--text);
+  font-size:16px;font-weight:700;text-decoration:none}
+.dl span{flex:none;color:var(--muted);font-size:14px;font-weight:600}
 .dir details{border-top:1px solid var(--line-soft)}
 .dir summary{display:flex;align-items:center;gap:10px;min-height:50px;cursor:pointer;list-style:none;font-weight:700;color:var(--text)}
 .dir summary::-webkit-details-marker{display:none}
@@ -256,6 +260,7 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
     <div class="note-body">
       <a href="boothmap.jpg" target="_blank" rel="noopener"><img class="map" src="boothmap.jpg" width="1037" height="585" alt="AI Festa 26 코엑스 C홀 부스 배치도. 입구는 오른쪽 아래, 출구는 왼쪽 아래다. 오른쪽에 피지컬 AI·로봇(P), 오른쪽 위에 에이전틱 AI+X(X)와 K-AI 파트너십(K), 가운데에 메인무대와 AI 경진대회(CH), 위쪽 가운데에 독자 파운데이션 모델(FD), 왼쪽 위부터 AI 반도체(S), AI 인프라(I), 국방 AI(D), 보안·양자(Q), 왼쪽 아래에 정부특별관(G)이 있다. 피지컬 존은 가운데 A존, 왼쪽·가운데 아래·입구 옆 B존, 오른쪽 끝과 왼쪽 위 C존으로 나뉜다."></a>
       <p class="cap">공식 홈페이지 부스 배치도입니다. 누르면 크게 열립니다. 아래 목록의 부스 번호는 배치도의 번호와 같습니다.</p>
+      <a class="dl" href="aifesta26-brochure.pdf" download="AI_Festa_26_브로슈어.pdf" target="_blank" rel="noopener">AI Festa 26 브로슈어 PDF 받기<span>12쪽 · 2.6MB</span></a>
       <div class="find"><input class="in" id="find" type="search" enterkeyhint="search" placeholder="기업명 또는 부스 번호 검색 (예: 삼성, D-03)" aria-label="부스 검색"></div>
       <div class="dir" id="dir"></div>
     </div>
@@ -433,11 +438,11 @@ const HALLS = [
       "C-09 엔이에스","C-10 휴머스온","C-11 에이쓰리","C-12 다큐브","C-13 스튜디오메타케이","C-14 더블유닷에이아이",
       "C-15 에이아이씨랩","C-16 한국언론진흥재단","C-17 윌콘에이아이","C-18 팀뷰어","C-19 산업별 인적자원개발위원회(ISC)",
       "C-20 뉴플로이","C-21 유클릭스"]},
-  {g:2, ko:"메가존클라우드 · 스폰서 부스", z:"M", c:"#A3A9B3", t:"#111", en:"MC-01 / M-01 / M-02", loc:"MC-01 파운데이션 모델관(FD-01) 아래 큰 회색 구역 · M-01·M-02 입구 앞 큰 회색 구역",
-   d:"메가존클라우드와 AWS·Google Cloud·Microsoft 등 클라우드 기업 공동 부스(MC-01), 행사 스폰서인 화웨이(M-01)·KT(M-02) 부스입니다.",
+  {g:2, ko:"멀티클라우드관 · 스폰서 구역", z:"M", c:"#A3A9B3", t:"#111", en:"MC-01 / M-01 / M-02", loc:"MC-01 파운데이션 모델관(FD-01) 아래 큰 회색 구역 · M-01·M-02 입구 앞 큰 회색 구역",
+   d:"메가존클라우드와 제휴 클라우드 기업(AWS·Google Cloud·Microsoft 등)이 함께 나온 멀티클라우드관(MC-01), 행사 스폰서인 화웨이(M-01)·KT(M-02)의 스폰서 구역입니다.",
    q:"이 구역에서 학교에 가져가고 싶은 것은 무엇이었습니까?",
-   b:["MC-01 메가존클라우드(AWS·Google Cloud·Intel·Microsoft·Akamai·Articul8·AvePoint·Samsung Cloud Platform)",
-      "M-01 화웨이(스폰서)","M-02 KT(스폰서)"]}
+   b:["MC-01 멀티클라우드관 · 메가존클라우드(AWS·Google Cloud·Intel·Microsoft·Akamai·Articul8·AvePoint·Samsung Cloud Platform)",
+      "M-01 화웨이(스폰서 구역)","M-02 KT(스폰서 구역)"]}
 ];
 const TOTAL = HALLS.filter(h=>!h.g).length;
 /* 추천 동선 — HALLS 순번(0부터). 입구(오른쪽 아래)에서 출구(왼쪽 아래)로 한 방향 */
@@ -571,7 +576,7 @@ zoneHead("특별관",`${TOTAL}곳`,"");
 HALLS.forEach((h,i)=>{ if(!h.g) list.appendChild(card(i)); });
 zoneHead("피지컬 존","A·B·C존","특별관 사이사이에 있는 기업 부스 구역입니다. 색은 부스 배치도와 같습니다. 들른 곳만 기록하시면 되고, 스탬프 개수에는 들어가지 않습니다.");
 HALLS.forEach((h,i)=>{ if(h.g===1) list.appendChild(card(i)); });
-zoneHead("대형 부스","MC · M","");
+zoneHead("멀티클라우드관 · 스폰서 구역","MC · M","");
 HALLS.forEach((h,i)=>{ if(h.g===2) list.appendChild(card(i)); });
 $("c-total").textContent=TOTAL;
 
