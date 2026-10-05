@@ -85,8 +85,36 @@ details.note[open]>summary{border-bottom:1px solid var(--line-soft)}
 .work{border:1px solid var(--line);border-radius:12px;background:var(--surface);transition:border-color .2s,background .2s}
 .work.done{border-color:var(--stamp-line);background:var(--stamp-dim)}
 .row{display:flex;align-items:flex-start;gap:10px;padding:14px}
-.num{font-size:14px;font-weight:700;color:var(--muted);min-width:22px;padding-top:2px}
-.work.done .num{color:var(--stamp)}
+.badge{display:inline-flex;align-items:center;justify-content:center;flex:none;min-width:34px;height:30px;padding:0 6px;
+  border-radius:8px;font-size:14px;font-weight:800;letter-spacing:-.01em}
+.row>.badge{margin-top:1px}
+.zone-note{margin:-2px 0 10px;font-size:15px;color:var(--text-2)}
+/* 추천 동선 */
+.route{list-style:none;margin:0;padding:0}
+.route li{position:relative;padding:0 0 0 22px}
+.route li::before{content:"";position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--line)}
+.route li:first-child::before{top:50%}.route li:last-child::before{bottom:50%}
+.route .end{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:800;color:var(--stamp)}
+.route .end::after{content:"";position:absolute;left:2px;width:12px;height:12px;border-radius:50%;background:var(--stamp)}
+.route button{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;margin:4px 0;padding:6px 12px;text-align:left;
+  border-radius:10px;border:1px solid var(--line);background:var(--surface-2)}
+.route button .st{flex:none;width:24px;font-weight:800;color:var(--muted)}
+.route button .nm{flex:1;font-size:16px;font-weight:700;color:var(--text)}
+.route button .ck{flex:none;font-size:14px;font-weight:700;color:var(--stamp)}
+/* 부스 찾기 */
+.find{margin:16px 0 8px}
+.dir details{border-top:1px solid var(--line-soft)}
+.dir summary{display:flex;align-items:center;gap:10px;min-height:50px;cursor:pointer;list-style:none;font-weight:700;color:var(--text)}
+.dir summary::-webkit-details-marker{display:none}
+.dir summary .cnt{margin-left:auto;font-size:14px;color:var(--muted);font-weight:600}
+.dir ul{list-style:none;margin:0 0 10px;padding:0}
+.dir li button{display:block;width:100%;min-height:44px;padding:9px 6px;text-align:left;font-size:15px;color:var(--text-2);
+  border-bottom:1px dashed var(--line-soft)}
+.dir li button b{color:var(--text);font-weight:800;margin-right:6px}
+.dir .none{padding:12px 0;color:var(--muted)}
+.work,.chip{scroll-margin-top:76px}
+.flash{animation:flash 1.6s ease}
+@keyframes flash{0%,40%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
 .ttl{flex:1;min-width:0}
 .ttl h3{font-size:18px;font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.4}
 .ttl .en{font-size:13px;color:var(--muted);margin-top:1px}
@@ -206,7 +234,7 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
     <summary>미션 진행 방법</summary>
     <div class="note-body">
       <ol>
-        <li>특별관을 둘러본 뒤 <b>완료</b>를 누르면 스탬프가 찍힙니다.</li>
+        <li>특별관을 둘러본 뒤 <b>관람</b>을 누르면 스탬프가 찍힙니다. 일반 부스(A·B·C존)도 들른 곳은 기록할 수 있습니다.</li>
         <li><b>기록</b>을 열어 방문 부스를 누르고, 학교 적용가능성(상·중·하)과 한 줄 메모를 남기십시오. 부스나 적용가능성을 고르면 스탬프도 함께 찍힙니다. 모든 항목은 선택이며 비워 두어도 됩니다.</li>
         <li>목록에 없는 부스는 이름을 적어 <b>추가</b>하십시오.</li>
         <li>관람을 마치면 아래 <b>마무리 문항</b> 3개를 쓰고 제출하십시오. 다시 제출하면 이전 제출 내용이 새 내용으로 바뀝니다.</li>
@@ -215,12 +243,21 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
     </div>
   </details>
 
-  <details class="note" id="map-box">
-    <summary>전시장 배치도</summary>
+  <details class="note" id="route-box">
+    <summary>추천 동선</summary>
     <div class="note-body">
-      <a href="boothmap.jpg" target="_blank" rel="noopener"><img class="map" src="boothmap.jpg" width="1037" height="585" alt="AI Festa 26 코엑스 C홀 부스 배치도. 입구는 오른쪽 아래, 출구는 왼쪽 아래다. 오른쪽에 피지컬 AI·로봇(P), 오른쪽 위에 에이전틱 AI+X(X)와 K-AI 파트너십(K), 가운데에 메인무대와 AI 경진대회(CH), 위쪽 가운데에 독자 파운데이션 모델(FD), 왼쪽 위부터 AI 반도체(S), AI 인프라(I), 국방 AI(D), 보안·양자(Q), 왼쪽 아래에 정부특별관(G)이 있다."></a>
-      <p class="cap">공식 홈페이지 부스 배치도 기준입니다. 배치도를 누르면 크게 열립니다. 각 관의 부스 번호(예: D-03)는 배치도의 번호와 같습니다.</p>
-      <p><b>추천 동선</b> — 입구(오른쪽 아래)에서 출구(왼쪽 아래)로 한 방향으로 돌 수 있습니다. 피지컬 AI(P) → 에이전틱 AI+X(X) → K-AI 파트너십(K) → AI 경진대회(CH) → 파운데이션 모델(FD) → AI 반도체(S) → AI 인프라(I) → 국방 AI(D) → 보안·양자(Q) → 정부특별관(G) 순서입니다.</p>
+      <p style="margin-top:0">입구에서 출구까지 한 방향으로 돌 수 있는 순서입니다. 누르면 해당 관으로 이동합니다.</p>
+      <ol class="route" id="route"></ol>
+    </div>
+  </details>
+
+  <details class="note" id="map-box">
+    <summary>전시장 배치도 · 부스 찾기</summary>
+    <div class="note-body">
+      <a href="boothmap.jpg" target="_blank" rel="noopener"><img class="map" src="boothmap.jpg" width="1037" height="585" alt="AI Festa 26 코엑스 C홀 부스 배치도. 입구는 오른쪽 아래, 출구는 왼쪽 아래다. 오른쪽에 피지컬 AI·로봇(P), 오른쪽 위에 에이전틱 AI+X(X)와 K-AI 파트너십(K), 가운데에 메인무대와 AI 경진대회(CH), 위쪽 가운데에 독자 파운데이션 모델(FD), 왼쪽 위부터 AI 반도체(S), AI 인프라(I), 국방 AI(D), 보안·양자(Q), 왼쪽 아래에 정부특별관(G)이 있다. 가운데에 A존, 왼쪽·가운데 아래·입구 옆에 B존, 오른쪽 끝과 왼쪽 위에 C존 일반 부스가 있다."></a>
+      <p class="cap">공식 홈페이지 부스 배치도입니다. 누르면 크게 열립니다. 아래 목록의 부스 번호는 배치도의 번호와 같습니다.</p>
+      <div class="find"><input class="in" id="find" type="search" enterkeyhint="search" placeholder="기업명 또는 부스 번호 검색 (예: 삼성, D-03)" aria-label="부스 검색"></div>
+      <div class="dir" id="dir"></div>
     </div>
   </details>
 
@@ -240,8 +277,8 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
     <p>관별 기록과 함께 제출됩니다.</p>
 
     <div class="f">
-      <label for="f-take">1. 학교에 가져갈 기술 1가지</label>
-      <input class="in" id="f-take" type="text" placeholder="오늘 본 것 중 하나">
+      <label for="f-take">1. 학교에 적용해보고 싶은 기술 (1가지 이상)</label>
+      <textarea class="in" id="f-take" rows="3" placeholder="오늘 본 기술 중 학교에 적용해 보고 싶은 것"></textarea>
     </div>
     <div class="f"><label for="f-staff">2. 교직원에게 한 문장으로 설명한다면</label>
       <textarea class="in" id="f-staff" rows="3" placeholder="오늘 본 것을 교직원 회의에서 한 문장으로 전한다면"></textarea>
@@ -325,66 +362,93 @@ const CONTACTS = [
 
 /* 특별관 — loc: 부스 배치도 위치 힌트, b: 공식 부스 배치도의 부스(번호 + 기업·기관명) */
 const HALLS = [
-  {ko:"AI 경진대회 특별관", en:"AI Competition", loc:"가운데 · 메인무대 바로 아래(CH-01)와 그 오른쪽(CH-02)",
+  {ko:"AI 경진대회 특별관", z:"CH", c:"#A3A9B3", t:"#111", en:"AI Competition", loc:"가운데 · 메인무대 바로 아래(CH-01)와 그 오른쪽(CH-02)",
    d:"AI Champion·AI Rookie 등 정부 AI 경진대회 참가팀의 결과물과 고교 AI·SW 챌린지를 보여 주는 관입니다.",
    q:"우리 학교 학생이 이런 대회에 도전하게 하려면, 학교가 먼저 마련해야 할 것은 무엇입니까?",
    b:["CH-01 AI Champion·AI Rookie 팀","CH-02 AI Champion·고교 AI·SW 챌린지","CH-02 한국과학창의재단 체험존"]},
-  {ko:"국방 AI 특별관", en:"Defense AI", loc:"왼쪽 · AI 인프라 특별관 바로 아래",
+  {ko:"국방 AI 특별관", z:"D", c:"#D42A2A", t:"#fff", en:"Defense AI", loc:"왼쪽 · AI 인프라 특별관 바로 아래",
    d:"감시·분석·지휘 지원 등 국방 분야에 적용되는 AI 기술을 소개합니다.",
    q:"생명·안전과 직결된 판단에 AI가 쓰이는 사례를 학생 AI 윤리교육에서 어떻게 다루시겠습니까?",
    b:["D-01 솔트룩스","D-02 편진","D-03 코난테크놀로지"]},
-  {ko:"독자 AI 파운데이션 모델 특별관", en:"Sovereign Foundation Model", loc:"위쪽 · 메인무대 왼쪽 회색 구역(FD-01)",
+  {ko:"독자 AI 파운데이션 모델 특별관", z:"FD", c:"#A3A9B3", t:"#111", en:"Sovereign Foundation Model", loc:"위쪽 · 메인무대 왼쪽 회색 구역(FD-01)",
    d:"정부 '독자 AI 파운데이션 모델' 프로젝트 정예팀의 한국형 거대 AI 모델과 활용 사례를 전시합니다.",
    q:"학교 업무와 수업에 생성형 AI를 들인다면, 어떤 기준으로 모델과 서비스를 고르시겠습니까?",
    b:["FD-01 LG AI연구원","FD-01 SK텔레콤","FD-01 업스테이지"]},
-  {ko:"정부특별관", en:"Government Pavilion", loc:"왼쪽 아래 · 출구 쪽(G-01~G-13)",
+  {ko:"정부특별관", z:"G", c:"#1F6380", t:"#fff", en:"Government Pavilion", loc:"왼쪽 아래 · 출구 쪽(G-01~G-13)",
    d:"정부와 공공기관의 AI 정책, 지원 사업, 공공 서비스 적용 사례를 안내합니다.",
    q:"공공 조직의 AI 도입 사례 중 학교 행정에 옮겨 볼 만한 것은 무엇이었습니까?",
    b:["G-01 한국과학기술연구원","G-02 올포랜드","G-03 신라왕경 디지털 재현사업","G-04 NIA 특별전시관(Wizcore·SK브로드밴드·KT)",
       "G-05 한국남부발전","G-06 한국인터넷진흥원","G-07 한국문화정보원","G-08 한국전자통신연구원","G-09 한국데이터산업진흥원",
       "G-10 한국방송통신전파진흥원 공동관","G-11 부산정보산업진흥원","G-12 한국지능정보사회진흥원","G-13 정보통신기획평가원"]},
-  {ko:"AI 인프라 특별관", en:"AI Infrastructure", loc:"왼쪽 위 · AI 반도체 특별관 바로 아래",
+  {ko:"AI 인프라 특별관", z:"I", c:"#23C3CE", t:"#06292B", en:"AI Infrastructure", loc:"왼쪽 위 · AI 반도체 특별관 바로 아래",
    d:"데이터센터, 클라우드, GPU 서버 등 AI를 돌리는 기반 설비와 서비스를 다룹니다.",
    q:"학교의 AI 활용을 늘린다면 기기·네트워크·클라우드 중 어디부터 보강하시겠습니까?",
    b:["I-01 망고부스트","I-02 엠키스코어","I-03 AWS | 스마일샤크","I-04 베이넥스 & HPE","I-05 그래파이"]},
-  {ko:"K-AI 파트너십 특별관", en:"K-AI Partnership", loc:"오른쪽 위 · 메인무대 오른쪽",
+  {ko:"K-AI 파트너십 특별관", z:"K", c:"#E9549C", t:"#fff", en:"K-AI Partnership", loc:"오른쪽 위 · 메인무대 오른쪽",
    d:"국내 AI 기업과 국내외 기관이 함께 만든 협력 사례를 소개합니다.",
    q:"지역 기업·대학과 손잡는다면, 우리 학교는 무엇을 내놓고 무엇을 얻을 수 있겠습니까?",
    b:["K-01 데이터얼라이언스","K-02 에코피스","K-03 플리토","K-04 래블업","K-05 심시스글로벌",
       "K-06 핀플로우","K-07 알파코드","K-08 씽크포비엘","K-09 아이디비"]},
-  {ko:"피지컬 AI & 로봇 특별관", en:"Physical AI & Robot", loc:"오른쪽 · 입구에서 위쪽으로(P-01~P-06)",
+  {ko:"피지컬 AI & 로봇 특별관", z:"P", c:"#7A3FE0", t:"#fff", en:"Physical AI & Robot", loc:"오른쪽 · 입구에서 위쪽으로(P-01~P-06)",
    d:"로봇, 자율주행 등 현실 공간에서 보고 판단하고 움직이는 AI를 시연합니다.",
    q:"오전 피지컬 AI 세션과 비교해, 학교 공간(급식·안전·돌봄 등) 중 어디부터 시험해 보시겠습니까?",
    b:["P-01 이스트소프트","P-02 라이드플럭스","P-03 두산로보틱스","P-04 롯데이노베이트",
       "P-05 IITP 월드모델 특별관(LG전자·알체라·크라우드웍스·로보티즈·KAIST·서울대)",
       "P-06 피지컬 AI 특별관(NC AI·다임테크놀로지·리얼월드·메가존·페르소나에이아이·인이지)"]},
-  {ko:"보안 & 양자 특별관", en:"Security & Quantum", loc:"왼쪽 · 국방 AI 특별관 오른쪽",
+  {ko:"보안 & 양자 특별관", z:"Q", c:"#2A6157", t:"#fff", en:"Security & Quantum", loc:"왼쪽 · 국방 AI 특별관 오른쪽",
    d:"AI 보안, 개인정보 보호, 양자 암호·양자 컴퓨팅 기술을 다룹니다.",
    q:"학생·교직원 정보를 지키기 위해 AI 도입 전에 학교가 점검해야 할 것은 무엇입니까?",
    b:["Q-01 한국표준과학연구원","Q-02 한국과학기술정보연구원","Q-03 충북양자연구센터","Q-04 큐심플러스","Q-05 오리엔텀",
       "Q-06 미래양자융합포럼","Q-07 큐노바","Q-08 이와이엘","Q-09 마크애니","Q-10 스마트엠투엠",
       "Q-11 휴네시온","Q-12 에브리존","Q-13 옥타코","Q-14 지니언스","Q-15 안랩"]},
-  {ko:"AI 반도체 특별관", en:"AI Semiconductor", loc:"왼쪽 위 · 카페테리아 아래",
+  {ko:"AI 반도체 특별관", z:"S", c:"#2F4BF2", t:"#fff", en:"AI Semiconductor", loc:"왼쪽 위 · 카페테리아 아래",
    d:"AI 연산에 특화된 NPU 등 국산 AI 반도체와 이를 넣은 기기를 전시합니다.",
    q:"이 산업을 진로교육과 잇는다면 어떤 학생 활동을 기획하시겠습니까?",
    b:["S-01 딥엑스","S-02 모빌린트","S-03 파네시아","S-04 디노티시아",
       "S-05 AX 디바이스 특별관(쿠쿠홈시스·피앤씨솔루션·아날로그플러스 등)","S-06 양자AI 융합센터"]},
-  {ko:"에이전틱 AI+X 특별관", en:"Agentic AI + X", loc:"오른쪽 맨 위 · K-AI 파트너십 특별관 오른쪽",
+  {ko:"에이전틱 AI+X 특별관", z:"X", c:"#C27C30", t:"#fff", en:"Agentic AI + X", loc:"오른쪽 맨 위 · K-AI 파트너십 특별관 오른쪽",
    d:"스스로 계획하고 도구를 써서 일을 처리하는 AI 에이전트를 업무·산업별로 적용한 사례를 보여 줍니다.",
    q:"교무·행정 업무 중 AI 에이전트에게 먼저 맡겨 보고 싶은 일은 무엇입니까?",
    b:["X-01 헥토이노베이션","X-02 나라원시스템","X-03 달파","X-04 원더무브","X-05 뉴엔AI",
       "X-06 데이터사이언스랩","X-07 건강보험공단","X-08 교림소프트","X-09 이노에이엑스","X-10 씨에스리",
       "X-11 인젠트","X-12 팝콘사","X-13 와이즈넛","X-14 코오롱베니트","X-15 인핸스",
-      "X-16 지란지교소프트","X-17 엔에이치엔","X-18 유라클","X-19 더존비즈온"]}
+      "X-16 지란지교소프트","X-17 엔에이치엔","X-18 유라클","X-19 더존비즈온"]},
+  {g:1, ko:"A존 일반 부스", z:"A", c:"#D23BD8", t:"#fff", en:"Zone A", loc:"가운데 · 메인무대 아래부터 입구 앞까지(분홍색)",
+   d:"삼성SDS·한컴·야놀자·MongoDB·Unity 등 기업 부스 20곳입니다.",
+   q:"이 구역에서 학교에 가져가고 싶은 것은 무엇이었습니까?",
+   b:["A-01 포티투마루","A-02 한컴","A-03 아크릴","A-04 삼성SDS","A-05 비즈니","A-06 한국기술교육대학교","A-07 위앤유텍",
+      "A-08 슈어소프트테크 & 모비젠","A-09 MongoDB","A-10 야놀자","A-11 크리니티","A-12 모노플로우","A-13 아이티센클로잇",
+      "A-14 국립부경대학교 소프트웨어융합혁신원","A-15 사이냅소프트","A-16 Unity Technologies Korea","A-17 충남콘텐츠진흥원(담가라·리모)",
+      "A-18 더픽트","A-19 비큐에이아이","A-20 코스테크"]},
+  {g:1, ko:"B존 일반 부스", z:"B", c:"#8DCB1F", t:"#152400", en:"Zone B", loc:"왼쪽 세로줄(B-11~19) · 가운데 아래(B-06~10) · 입구 옆(B-01~05), 연두색",
+   d:"티맥스소프트·NHN클라우드·한국관광공사 등 기업·기관 부스 19곳입니다.",
+   q:"이 구역에서 학교에 가져가고 싶은 것은 무엇이었습니까?",
+   b:["B-01 플로우","B-02 큐밋","B-03 사이오닉에이아이","B-04 팀스파르타","B-05 엔에이치엔클라우드","B-06 티맥스소프트",
+      "B-07 비아이매트릭스","B-08 유니바","B-09 디케이시스템","B-10 다온아이앤씨","B-11 미소정보기술","B-12 유클리드소프트",
+      "B-13 피플앤드테크놀러지","B-14 비오","B-15 넥톤","B-16 에니컴","B-17 코어위브","B-18 부산창조경제혁신센터","B-19 한국관광공사"]},
+  {g:1, ko:"C존 일반 부스", z:"C", c:"#FF8A00", t:"#2B1700", en:"Zone C", loc:"오른쪽 끝 세로줄(C-01~11) · 오른쪽 위(C-12~17) · 왼쪽 위(C-18~21), 주황색",
+   d:"한국언론진흥재단·팀뷰어·유클릭스 등 부스 20곳입니다.",
+   q:"이 구역에서 학교에 가져가고 싶은 것은 무엇이었습니까?",
+   b:["C-01 스프링온워드","C-02 클러쉬","C-03 더플레이토","C-05 비즈크러시","C-06 펀타에이아이","C-07 세카","C-08 코어",
+      "C-09 엔이에스","C-10 휴머스온","C-11 에이쓰리","C-12 다큐브","C-13 스튜디오메타케이","C-14 더블유닷에이아이",
+      "C-15 에이아이씨랩","C-16 한국언론진흥재단","C-17 윌콘에이아이","C-18 팀뷰어","C-19 산업별 인적자원개발위원회(ISC)",
+      "C-20 뉴플로이","C-21 유클릭스"]},
+  {g:1, ko:"멀티클라우드관 · 대형 부스", z:"M", c:"#A3A9B3", t:"#111", en:"Multi-Cloud / Major Booths", loc:"MC-01 가운데 왼쪽 큰 회색 구역 · M-01·M-02 입구 앞 큰 회색 구역",
+   d:"메가존클라우드 멀티클라우드관(AWS·Google Cloud·Microsoft 등)과 화웨이·KT 대형 부스입니다.",
+   q:"이 구역에서 학교에 가져가고 싶은 것은 무엇이었습니까?",
+   b:["MC-01 멀티클라우드관(메가존클라우드·AWS·Google Cloud·Intel·Microsoft·Akamai·Articul8·AvePoint·Samsung Cloud Platform)",
+      "M-01 화웨이","M-02 KT"]}
 ];
-const TOTAL = HALLS.length;
+const TOTAL = HALLS.filter(h=>!h.g).length;
+/* 추천 동선 — HALLS 순번(0부터). 입구(오른쪽 아래)에서 출구(왼쪽 아래)로 한 방향 */
+const ROUTE = [6,9,5,0,2,8,4,1,7,3];
 
 /* 시트 열 — [키, 머리행 이름]. 여기에 항목을 추가하면 시트 오른쪽에 열이 자동으로 생긴다.
    키는 한번 정하면 바꾸지 않는다(바꾸면 새 열이 된다). 이름은 바꿔도 같은 열이 유지된다 */
 const FIELDS = [
   ["gi","기수"], ["name","성명"], ["school","소속교"], ["stamps","스탬프"], ["total","전체 관"],
   ["boothN","방문 부스 수"], ["booths","방문 부스"], ["rates","학교 적용가능성"], ["memos","관별 메모"],
-  ["take","가져갈 기술"], ["staff","교직원에게 한 문장"], ["oneyear","1년 내 들어올 기술·이유"],
+  ["take","적용해보고 싶은 기술"], ["staff","교직원에게 한 문장"], ["oneyear","1년 내 들어올 기술·이유"],
   ["ua","기기"], ["visited","관람한 관(코드)"], ["rateCodes","적용가능성(코드)"]
 ];
 const RATES = ["상","중","하"];
@@ -461,7 +525,7 @@ function card(i){
   el.className="work"+(done?" done":""); el.dataset.i=i;
   el.innerHTML=`
     <div class="row">
-      <div class="num">${pad(i+1)}</div>
+      <span class="badge" style="background:${h.c};color:${h.t}">${esc(h.z)}</span>
       <div class="ttl">
         <h3>${esc(h.ko)}</h3>
         <div class="en">${esc(h.en)}</div>
@@ -497,20 +561,63 @@ function card(i){
   return el;
 }
 
-const zone=document.createElement("div"); zone.className="zone";
-zone.innerHTML=`<h2>특별관</h2><span class="range">01–${pad(TOTAL)}</span>`;
-list.appendChild(zone);
-HALLS.forEach((_,i)=>list.appendChild(card(i)));
+function zoneHead(title,range,note){
+  const z=document.createElement("div"); z.className="zone";
+  z.innerHTML=`<h2>${esc(title)}</h2><span class="range">${esc(range)}</span>`;
+  list.appendChild(z);
+  if(note){ const p=document.createElement("p"); p.className="zone-note"; p.textContent=note; list.appendChild(p); }
+}
+zoneHead("특별관",`${TOTAL}곳`,"");
+HALLS.forEach((h,i)=>{ if(!h.g) list.appendChild(card(i)); });
+zoneHead("일반 부스","A·B·C존 · 대형 부스","특별관 사이사이에 있는 기업 부스입니다. 들른 곳만 기록하시면 되고, 스탬프 개수에는 들어가지 않습니다.");
+HALLS.forEach((h,i)=>{ if(h.g) list.appendChild(card(i)); });
 $("c-total").textContent=TOTAL;
+
+function syncRoute(){
+  document.querySelectorAll("#route [data-goto]").forEach(b=>{
+    b.querySelector(".ck").textContent=state.done.includes(Number(b.dataset.goto))?"완료":"";
+  });
+}
+/* 추천 동선·부스 찾기 */
+const badgeHTML=h=>`<span class="badge" style="background:${h.c};color:${h.t}">${esc(h.z)}</span>`;
+$("route").innerHTML=`<li><span class="end">입구 · 오른쪽 아래</span></li>`+
+  ROUTE.map((i,k)=>`<li><button type="button" data-goto="${i}"><span class="st">${k+1}</span>${badgeHTML(HALLS[i])}<span class="nm">${esc(HALLS[i].ko)}</span><span class="ck"></span></button></li>`).join("")+
+  `<li><span class="end">출구 · 왼쪽 아래</span></li>`;
+$("dir").innerHTML=HALLS.map((h,i)=>`<details data-i="${i}"><summary>${badgeHTML(h)}<span>${esc(h.ko)}</span><span class="cnt">${h.b.length}</span></summary>
+  <ul>${h.b.map(n=>`<li><button type="button" data-goto="${i}" data-name="${esc(n)}" data-q="${esc(n.toLowerCase())}">${(m=>m?`<b>${esc(m[1])}</b>${esc(m[2])}`:esc(n))(n.match(/^([A-Z]{1,2}-\d{2})\s(.*)$/))}</button></li>`).join("")}</ul></details>`).join("")+
+  `<p class="none" id="dir-none" hidden>찾는 부스가 없습니다. 기록 칸에 직접 추가하실 수 있습니다.</p>`;
+function goTo(i,name){
+  const el=list.querySelector(`.work[data-i="${i}"]`); if(!el) return;
+  const box=el.querySelector(".memo");
+  if(!box.classList.contains("open")){ box.classList.add("open"); el.querySelector(".memo-btn").setAttribute("aria-expanded","true"); }
+  const chip=name?[...el.querySelectorAll(".chip")].find(c=>c.dataset.name===name):null;
+  const t=chip||el;
+  t.scrollIntoView({behavior:"smooth",block:chip?"center":"start"});
+  t.classList.remove("flash"); void t.offsetWidth; t.classList.add("flash");
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("#route [data-goto], #dir [data-goto]"); if(b) goTo(Number(b.dataset.goto),b.dataset.name);
+});
+$("find").addEventListener("input",()=>{
+  const q=$("find").value.trim().toLowerCase(); let any=false;
+  document.querySelectorAll("#dir details").forEach(d=>{
+    let hit=0;
+    d.querySelectorAll("li").forEach(li=>{ const ok=!q||li.firstElementChild.dataset.q.includes(q); li.hidden=!ok; if(ok) hit++; });
+    d.hidden=q&&!hit; d.open=!!q&&hit>0; if(hit) any=true;
+  });
+  $("dir-none").hidden=!q||any;
+});
 
 function boothTotal(){ return Object.values(state.booths).reduce((s,a)=>s+a.length,0); }
 function recordKeys(){ return HALLS.map((_,i)=>i).filter(hasRecord); }
 
+const specialDone=()=>state.done.filter(i=>HALLS[i]&&!HALLS[i].g).length;
 function sync(){
-  const n=state.done.length;
+  const n=specialDone();
   $("c-done").textContent=n;
   $("c-booth").textContent=boothTotal();
   $("c-bar").style.width=(n/TOTAL*100)+"%";
+  syncRoute();
   if(state.sent) return;
   const b=$("submit"), h=$("submit-hint");
   b.textContent=`마무리 · 제출 (${n}/${TOTAL})`;
@@ -677,7 +784,7 @@ $("send").addEventListener("click",async()=>{
     gi:      INFO.gi,
     name:    val("f-name"),
     school:  val("f-school"),
-    stamps:  state.done.length,
+    stamps:  specialDone(),
     total:   TOTAL,
     boothN:  boothTotal(),
     booths:  hallsCol(i=>picked(i).join(", ")),
