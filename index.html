@@ -378,6 +378,15 @@ const HALLS = [
       "X-16 지란지교소프트","X-17 엔에이치엔","X-18 유라클","X-19 더존비즈온"]}
 ];
 const TOTAL = HALLS.length;
+
+/* 시트 열 — [키, 머리행 이름]. 여기에 항목을 추가하면 시트 오른쪽에 열이 자동으로 생긴다.
+   키는 한번 정하면 바꾸지 않는다(바꾸면 새 열이 된다). 이름은 바꿔도 같은 열이 유지된다 */
+const FIELDS = [
+  ["gi","기수"], ["name","성명"], ["school","소속교"], ["stamps","스탬프"], ["total","전체 관"],
+  ["boothN","방문 부스 수"], ["booths","방문 부스"], ["rates","학교 적용가능성"], ["memos","관별 메모"],
+  ["take","가져갈 기술"], ["staff","교직원에게 한 문장"], ["oneyear","1년 내 들어올 기술·이유"],
+  ["ua","기기"], ["visited","관람한 관(코드)"], ["rateCodes","적용가능성(코드)"]
+];
 const RATES = ["상","중","하"];
 const FORM_IDS = ["f-take","f-staff","f-oneyear","f-name","f-school"];
 
@@ -680,6 +689,8 @@ $("send").addEventListener("click",async()=>{
     ua:      navigator.userAgent,
     visited: state.done.slice().sort((a,b)=>a-b).map(i=>`[${pad(i+1)}]`).join(""),
     sid:     state.sid,
+    fields:  FIELDS,
+    halls:   HALLS.map(h=>h.ko),
     rateCodes: HALLS.map((_,i)=>state.rate[i]?`[${pad(i+1)}${state.rate[i]}]`:"").join("")
   };
 
