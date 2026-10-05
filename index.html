@@ -63,10 +63,16 @@ details.note[open]>summary{border-bottom:1px solid var(--line-soft)}
 .note-body li+li{margin-top:8px}
 .note-body p{margin:12px 0 0}
 .note-body b{color:var(--text)}
-.contacts{list-style:none;padding:0!important}
+.org{margin:14px 0 8px!important;font-weight:700;color:var(--text)}
+.contacts{display:flex;flex-direction:column;gap:8px}
 .map{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line);background:#fff}
 .cap{margin:8px 0 0!important;font-size:14px;color:var(--muted)}
-.contacts a{color:var(--accent);font-weight:700;text-decoration:none}
+.contacts a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:50px;padding:0 14px;
+  border-radius:10px;border:1px solid var(--accent-line);background:var(--accent-dim);color:var(--text);
+  font-size:16px;font-weight:700;text-decoration:none}
+.contacts a span{color:var(--muted);font-weight:600;font-size:15px}
+.done-contacts{margin:0 0 16px}
+.done-contacts .org{margin:0 0 8px!important}
 
 /* 구역 */
 .zone{display:flex;align-items:baseline;gap:9px;margin:28px 0 10px}
@@ -218,10 +224,11 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
   </details>
 
   <details class="note" id="contact-box" hidden>
-    <summary>집결 · 연락처</summary>
+    <summary>집결 · 문의처</summary>
     <div class="note-body">
       <p style="margin-top:0" id="gather-note"></p>
-      <ul class="contacts" id="contacts"></ul>
+      <p class="org" id="contact-org"></p>
+      <div class="contacts" id="contacts"></div>
     </div>
   </details>
 
@@ -296,7 +303,7 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
 
 <script>
 /* Apps Script 웹앱 배포 URL (…/exec) — 배포 후 여기에 넣는다 */
-const API_URL = "";
+const API_URL = "https://script.google.com/macros/s/AKfycbwpwBrAIQf_qrYmK8ofhJ8k5113wKtIGxf21FSCrAV58ooK64eSKzRa91foaCDRRE2Jdg/exec";
 
 /* 행사·일정 */
 const INFO = {
@@ -309,10 +316,11 @@ const INFO = {
   bus:    "15:00 버스 출발"
 };
 
-/* 연락처 — 값을 채우면 안내 상자에 전화 링크로 나온다 */
+/* 문의처 — tel은 전화, url은 외부 링크로 나온다 */
+const CONTACT_ORG = "(사)한국능률협회 사무국";
 const CONTACTS = [
-  // {label:"운영진 ○○○", tel:"010-0000-0000"},
-  // {label:"비상연락", tel:"010-0000-0000"}
+  {label:"전화", text:"010-4823-1396", tel:"010-4823-1396"},
+  {label:"카카오톡", text:"오픈채팅 열기", url:"https://open.kakao.com/o/s9dKGiIi"}
 ];
 
 /* 특별관 — loc: 플로어맵 위치 힌트, b: 사전 확인된 참가 부스(공개 보도 기준). 확정 시 추가한다 */
@@ -387,11 +395,19 @@ $("fact-time").textContent=INFO.time;
 $("fact-gather").innerHTML=`<b>${esc(INFO.gather)}</b> · ${esc(INFO.bus)}`;
 const gatherHTML=`<b>${esc(INFO.gather)}</b>에 모입니다.<br>${esc(INFO.bus)}`;
 $("done-gather").innerHTML=gatherHTML;
+const contactLinks=CONTACTS.map(c=>{
+  const href=c.tel?`tel:${c.tel.replace(/[^0-9+]/g,"")}`:c.url;
+  const ext=c.url?' target="_blank" rel="noopener"':"";
+  return `<a href="${esc(href)}"${ext}><span>${esc(c.label)}</span>${esc(c.text)}</a>`;
+}).join("");
 if(CONTACTS.length){
   $("contact-box").hidden=false;
   $("gather-note").innerHTML=gatherHTML;
-  $("contacts").innerHTML=CONTACTS.map(c=>
-    `<li>${esc(c.label)} <a href="tel:${esc(c.tel.replace(/[^0-9+]/g,""))}">${esc(c.tel)}</a></li>`).join("");
+  $("contact-org").textContent=`문의 · ${CONTACT_ORG}`;
+  $("contacts").innerHTML=contactLinks;
+  const d=document.createElement("div"); d.className="done-contacts";
+  d.innerHTML=`<p class="org">문의 · ${esc(CONTACT_ORG)}</p><div class="contacts">${contactLinks}</div>`;
+  $("done-gather").after(d);
 }
 
 /* 카드 */
@@ -646,7 +662,9 @@ $("send").addEventListener("click",async()=>{
     take3:   val("f-take3"),
     staff:   val("f-staff"),
     oneyear: val("f-oneyear"),
-    ua:      navigator.userAgent
+    ua:      navigator.userAgent,
+    visited: state.done.slice().sort((a,b)=>a-b).map(i=>`[${pad(i+1)}]`).join(""),
+    rateCodes: HALLS.map((_,i)=>state.rate[i]?`[${pad(i+1)}${state.rate[i]}]`:"").join("")
   };
 
   try{
@@ -659,7 +677,7 @@ $("send").addEventListener("click",async()=>{
     showDone(`${payload.name} 교장선생님, 특별관 ${payload.stamps}/${payload.total}곳 기록과 함께 접수되었습니다.`);
   }catch(err){
     msg.classList.add("err");
-    msg.textContent="제출에 실패했습니다. 입력한 내용은 이 기기에 저장되어 있으니, 통신이 잡히는 곳(전시장 입구·로비)에서 다시 눌러 주십시오. 계속 실패하면 운영진에게 알려 주십시오.";
+    msg.textContent="제출에 실패했습니다. 입력한 내용은 이 기기에 저장되어 있으니, 통신이 잡히는 곳(전시장 입구·로비)에서 다시 눌러 주십시오. 계속 실패하면 위쪽 「집결 · 문의처」로 연락해 주십시오.";
   }finally{
     sending=false; btn.disabled=false; btn.textContent="제출하기";
   }
