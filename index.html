@@ -786,6 +786,7 @@ $("send").addEventListener("click",async()=>{
 
   const btn=$("send");
   sending=true; btn.disabled=true; btn.textContent="제출 중…";
+  msg.textContent="전송하고 있습니다. 최대 30초 정도 걸릴 수 있으니 화면을 닫지 말고 기다려 주십시오.";
 
   const payload={
     gi:      INFO.gi,
@@ -808,8 +809,9 @@ $("send").addEventListener("click",async()=>{
     rateCodes: HALLS.map((_,i)=>state.rate[i]?`[${pad(i+1)}${state.rate[i]}]`:"").join("")
   };
 
+  let timedOut=false;
   try{
-    const ctl=new AbortController(), to=setTimeout(()=>ctl.abort(),20000);
+    const ctl=new AbortController(), to=setTimeout(()=>{ timedOut=true; ctl.abort(); },45000);
     const res=await fetch(API_URL,{method:"POST",body:JSON.stringify(payload),signal:ctl.signal});
     clearTimeout(to);
     const out=await res.json();
@@ -820,7 +822,9 @@ $("send").addEventListener("click",async()=>{
       : `${payload.name} 교장선생님, 특별관 ${payload.stamps}/${payload.total}곳 기록과 함께 접수되었습니다.`);
   }catch(err){
     msg.classList.add("err");
-    msg.textContent="제출에 실패했습니다. 입력한 내용은 이 기기에 저장되어 있으니, 통신이 잡히는 곳(전시장 입구·로비)에서 다시 눌러 주십시오. 계속 실패하면 위쪽 「집결 · 문의처」로 연락해 주십시오.";
+    msg.textContent=timedOut
+      ? "응답이 늦어 접수 여부를 확인하지 못했습니다. 이미 접수됐을 수 있으며, 다시 눌러도 중복으로 쌓이지 않습니다. 한 번 더 눌러 주십시오. 계속 이러면 위쪽 「집결 · 문의처」로 연락해 주십시오."
+      : "제출에 실패했습니다. 입력한 내용은 이 기기에 저장되어 있으니, 통신이 잡히는 곳(전시장 입구·로비)에서 다시 눌러 주십시오. 다시 눌러도 중복으로 쌓이지 않습니다. 계속 실패하면 위쪽 「집결 · 문의처」로 연락해 주십시오.";
   }finally{
     sending=false; btn.disabled=false; btn.textContent="제출하기";
   }
