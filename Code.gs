@@ -136,7 +136,7 @@ function buildDashboard() {
   sh.getRange("A1").setValue("AI 페스타 참관 미션 제출 현황").setFontWeight("bold").setFontSize(14);
 
   const summary = [
-    ["제출 인원(성명 기준, 중복 제외)", `=IFERROR(COUNTUNIQUE(FILTER(${name},${name}<>"")),0)`],
+    ["제출 인원(성명 기준, 중복 제외)", `=IF(COUNTA(${name})=0,0,COUNTUNIQUE(FILTER(${name},${name}<>"")))`],
     ["총 제출 건수(다시 제출 포함)",     `=COUNTA(${name})`],
     ["명단 인원",                        `=COUNTA(${rName})`],
     ["미제출 인원",                      `=IF(B5=0,"명단 탭 입력 필요",SUMPRODUCT((${rName}<>"")*ISNA(MATCH(${rName},${name},0))))`],
