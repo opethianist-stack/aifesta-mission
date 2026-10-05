@@ -64,6 +64,8 @@ details.note[open]>summary{border-bottom:1px solid var(--line-soft)}
 .note-body p{margin:12px 0 0}
 .note-body b{color:var(--text)}
 .contacts{list-style:none;padding:0!important}
+.map{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--line);background:#fff}
+.cap{margin:8px 0 0!important;font-size:14px;color:var(--muted)}
 .contacts a{color:var(--accent);font-weight:700;text-decoration:none}
 
 /* 구역 */
@@ -206,6 +208,15 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
     </div>
   </details>
 
+  <details class="note" id="map-box">
+    <summary>전시장 배치도</summary>
+    <div class="note-body">
+      <a href="floorplan.jpg" target="_blank" rel="noopener"><img class="map" src="floorplan.jpg" width="1200" height="685" alt="AI Festa 26 코엑스 C홀 배치도. 왼쪽에 국방 AI, K-AI 파트너십, 피지컬 AI, AI 반도체, 양자, 공공기관 특별관, 가운데에 독자 파운데이션 모델, AI 인프라, 메인 스테이지, AI 경진대회, 오른쪽에 AI 트렌드관과 스폰서 구역이 있다."></a>
+      <p class="cap">참가 안내 브로슈어 기준이며 현장 배치와 다를 수 있습니다. 배치도를 누르면 크게 열립니다.</p>
+      <p><b>추천 동선</b> — 왼쪽 구역에 6개 관이 모여 있습니다. 국방 AI → K-AI 파트너십 → 피지컬 AI → AI 반도체 → 양자 → 공공기관 순으로 돈 뒤, 가운데(파운데이션 모델 → AI 인프라 → AI 경진대회)로 이동하면 되돌아가는 길이 적습니다.</p>
+    </div>
+  </details>
+
   <details class="note" id="contact-box" hidden>
     <summary>집결 · 연락처</summary>
     <div class="note-body">
@@ -306,43 +317,43 @@ const CONTACTS = [
 
 /* 특별관 — loc: 플로어맵 위치 힌트, b: 사전 확인된 참가 부스(공개 보도 기준). 확정 시 추가한다 */
 const HALLS = [
-  {ko:"AI 경진대회 특별관", en:"AI Competition", loc:"",
+  {ko:"AI 경진대회 특별관", en:"AI Competition", loc:"가운데 · 메인 스테이지 바로 아래",
    d:"정부·공공 AI 경진대회의 수상작과 출품 기술을 모아 보여 주는 관입니다.",
    q:"우리 학교 학생이 이런 대회에 도전하게 하려면, 학교가 먼저 마련해야 할 것은 무엇입니까?",
    b:[]},
-  {ko:"국방 AI 특별관", en:"Defense AI", loc:"",
+  {ko:"국방 AI 특별관", en:"Defense AI", loc:"왼쪽 위 · 카페테리아 오른쪽",
    d:"감시·분석·지휘 지원 등 국방 분야에 적용되는 AI 기술을 소개합니다.",
    q:"생명·안전과 직결된 판단에 AI가 쓰이는 사례를 학생 AI 윤리교육에서 어떻게 다루시겠습니까?",
    b:["코난테크놀로지"]},
-  {ko:"독자 AI 파운데이션 모델 특별관", en:"Sovereign Foundation Model", loc:"",
+  {ko:"독자 AI 파운데이션 모델 특별관", en:"Sovereign Foundation Model", loc:"왼쪽 위 · 국방 AI관과 메인 스테이지 사이",
    d:"정부 '독자 AI 파운데이션 모델' 프로젝트에 참여한 정예팀의 한국형 거대 AI 모델과 활용 사례를 전시합니다.",
    q:"학교 업무와 수업에 생성형 AI를 들인다면, 어떤 기준으로 모델과 서비스를 고르시겠습니까?",
    b:["LG AI연구원","SK텔레콤","업스테이지"]},
-  {ko:"정부특별관", en:"Government Pavilion", loc:"",
+  {ko:"정부특별관", en:"Government Pavilion", loc:"왼쪽 아래 · 배치도의 '공공기관 특별관'",
    d:"정부와 공공기관의 AI 정책, 지원 사업, 공공 서비스 적용 사례를 안내합니다.",
    q:"공공 조직의 AI 도입 사례 중 학교 행정에 옮겨 볼 만한 것은 무엇이었습니까?",
    b:[]},
-  {ko:"AI 인프라 특별관", en:"AI Infrastructure", loc:"",
+  {ko:"AI 인프라 특별관", en:"AI Infrastructure", loc:"왼쪽 · 파운데이션 모델관 바로 아래",
    d:"데이터센터, 클라우드, GPU 등 AI를 돌리는 기반 설비와 서비스를 다룹니다.",
    q:"학교의 AI 활용을 늘린다면 기기·네트워크·클라우드 중 어디부터 보강하시겠습니까?",
    b:[]},
-  {ko:"K-AI 파트너십 특별관", en:"K-AI Partnership", loc:"",
+  {ko:"K-AI 파트너십 특별관", en:"K-AI Partnership", loc:"왼쪽 · 국방 AI관 바로 아래",
    d:"국내 AI 기업과 국내외 기관이 함께 만든 협력 사례를 소개합니다.",
    q:"지역 기업·대학과 손잡는다면, 우리 학교는 무엇을 내놓고 무엇을 얻을 수 있겠습니까?",
    b:[]},
-  {ko:"피지컬 AI & 로봇 특별관", en:"Physical AI & Robot", loc:"",
+  {ko:"피지컬 AI & 로봇 특별관", en:"Physical AI & Robot", loc:"왼쪽 · K-AI 파트너십관 바로 아래",
    d:"로봇, 자율 이동체 등 현실 공간에서 보고 판단하고 움직이는 AI를 시연합니다.",
    q:"오전 피지컬 AI 세션과 비교해, 학교 공간(급식·안전·돌봄 등) 중 어디부터 시험해 보시겠습니까?",
    b:["LG전자","KAIST","서울대학교","로보티즈","크라우드웍스","알체라"]},
-  {ko:"보안 & 양자 특별관", en:"Security & Quantum", loc:"",
+  {ko:"보안 & 양자 특별관", en:"Security & Quantum", loc:"왼쪽 아래 구석 · 배치도의 '양자 특별관'",
    d:"AI 보안, 개인정보 보호, 양자 암호·양자 컴퓨팅 기술을 다룹니다.",
    q:"학생·교직원 정보를 지키기 위해 AI 도입 전에 학교가 점검해야 할 것은 무엇입니까?",
    b:[]},
-  {ko:"AI 반도체 특별관", en:"AI Semiconductor", loc:"",
+  {ko:"AI 반도체 특별관", en:"AI Semiconductor", loc:"왼쪽 · 피지컬 AI관 바로 아래",
    d:"AI 연산에 특화된 NPU 등 국산 AI 반도체와 적용 사례를 전시합니다.",
    q:"이 산업을 진로교육과 잇는다면 어떤 학생 활동을 기획하시겠습니까?",
    b:[]},
-  {ko:"에이전틱 AI+X 특별관", en:"Agentic AI + X", loc:"",
+  {ko:"에이전틱 AI+X 특별관", en:"Agentic AI + X", loc:"배치도에 표시 없음 · 현장 안내판 확인",
    d:"스스로 계획하고 도구를 써서 일을 처리하는 AI 에이전트를 산업별로 적용한 사례를 보여 줍니다.",
    q:"교무·행정 업무 중 AI 에이전트에게 먼저 맡겨 보고 싶은 일은 무엇입니까?",
    b:["와이즈넛"]}
