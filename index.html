@@ -163,10 +163,6 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
   color:var(--text-2);font-size:15px;font-weight:600;line-height:1.3}
 .chip.on{border-color:var(--accent);background:var(--accent-dim);color:var(--text)}
 .chip.on::before{content:"✓ ";color:var(--accent);font-weight:800}
-.badd{display:flex;gap:8px;margin-top:8px}
-.badd .in{flex:1;min-width:0}
-.badd button{flex:none;min-width:64px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);
-  color:var(--text);font-size:15px;font-weight:700}
 
 /* 마무리·제출 */
 .panel{margin:30px 0 0;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:20px 16px}
@@ -216,7 +212,7 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
 
 <div class="tracker">
   <div class="tracker-in">
-    <div class="count">특별관 <b id="c-done">0</b> / <span id="c-total">10</span><span class="sub">부스 <b id="c-booth">0</b></span></div>
+    <div class="count">관람 <b id="c-done">0</b> / <span id="c-total">14</span><span class="sub">부스 <b id="c-booth">0</b></span></div>
     <div class="bar"><span id="c-bar"></span></div>
   </div>
 </div>
@@ -238,9 +234,8 @@ textarea::placeholder,.in::placeholder{color:#6F7988}
     <summary>미션 진행 방법</summary>
     <div class="note-body">
       <ol>
-        <li>특별관을 둘러본 뒤 <b>관람</b>을 누르면 스탬프가 찍힙니다. 피지컬 존(A·B·C존)과 대형 부스도 들른 곳은 기록할 수 있습니다.</li>
+        <li>구역을 둘러본 뒤 <b>관람</b>을 누르면 스탬프가 찍힙니다. 특별관 10곳, 피지컬 존 A·B·C존, 멀티클라우드관·스폰서 구역까지 모두 14곳입니다.</li>
         <li><b>기록</b>을 열어 방문 부스를 누르고, 학교 적용가능성(상·중·하)과 한 줄 메모를 남기십시오. 부스나 적용가능성을 고르면 스탬프도 함께 찍힙니다. 모든 항목은 선택이며 비워 두어도 됩니다.</li>
-        <li>목록에 없는 부스는 이름을 적어 <b>추가</b>하십시오.</li>
         <li>관람을 마치면 아래 <b>마무리 문항</b> 3개를 쓰고 제출하십시오. 다시 제출하면 이전 제출 내용이 새 내용으로 바뀝니다.</li>
       </ol>
       <p>입력한 내용은 이 기기에 바로 저장됩니다. 전시장 통신이 끊기거나 화면을 닫아도 다시 열면 이어서 쓰실 수 있습니다.</p>
@@ -354,14 +349,15 @@ const INFO = {
   place:  "코엑스 3층 C홀 · AI Festa 26",
   time:   "13:00 ~ 15:00",
   gather: "14:50 C홀 입구",
-  bus:    "15:00 버스 출발"
+  bus:    "15:00 버스 출발",
+  after:  "제출하셨으면 자유롭게 관람하시고 14:50 C홀 입구에서 만나요"
 };
 
 /* 문의처 — tel은 전화, url은 외부 링크로 나온다 */
 const CONTACTS = [
   {label:"초등 인솔 · 신슬기 팀장", text:"010-8390-8190", tel:"010-8390-8190"},
   {label:"중등 인솔 · 서보경 위원", text:"010-7919-5810", tel:"010-7919-5810"},
-  {label:"(사)한국능률협회 사무국", text:"010-4823-1396", tel:"010-4823-1396"},
+  {label:"(사)한국능률협회 사무국 · 송무석 위원", text:"010-4823-1396", tel:"010-4823-1396"},
   {label:"카카오톡 오픈채팅", text:"열기", url:"https://open.kakao.com/o/s9dKGiIi"}
 ];
 
@@ -444,7 +440,7 @@ const HALLS = [
    b:["MC-01 멀티클라우드관 · 메가존클라우드(AWS·Google Cloud·Intel·Microsoft·Akamai·Articul8·AvePoint·Samsung Cloud Platform)",
       "M-01 화웨이(스폰서 구역)","M-02 KT(스폰서 구역)"]}
 ];
-const TOTAL = HALLS.filter(h=>!h.g).length;
+const TOTAL = HALLS.length;
 /* 추천 동선 — HALLS 순번(0부터). 입구(오른쪽 아래)에서 출구(왼쪽 아래)로 한 방향 */
 const ROUTE = [6,9,5,0,2,8,4,1,7,3];
 
@@ -534,7 +530,7 @@ function card(i){
       <div class="ttl">
         <h3>${esc(h.ko)}</h3>
         <div class="en">${esc(h.en)}</div>
-        ${h.loc?`<p class="loc">위치 · ${esc(h.loc)}</p>`:""}
+        ${h.loc?`<p class="loc">위치: ${esc(h.loc)}</p>`:""}
         <p class="desc">${esc(h.d)}</p>
         <div class="tags">${tagsHTML(i)}</div>
       </div>
@@ -547,10 +543,6 @@ function card(i){
       <div class="blk">
         <p class="blabel">방문 부스 <span>— 누르면 표시됩니다</span></p>
         <div class="chips">${chipsHTML(i)}</div>
-        <div class="badd">
-          <input class="in" type="text" enterkeyhint="done" maxlength="40" aria-label="${esc(h.ko)} 부스 직접 추가" placeholder="기억에 남은 부스(기업)명">
-          <button type="button" data-act="add">추가</button>
-        </div>
       </div>
       <div class="blk">
         <p class="blabel">학교 적용가능성 <span>— 선택</span></p>
@@ -572,9 +564,9 @@ function zoneHead(title,range,note){
   list.appendChild(z);
   if(note){ const p=document.createElement("p"); p.className="zone-note"; p.textContent=note; list.appendChild(p); }
 }
-zoneHead("특별관",`${TOTAL}곳`,"");
+zoneHead("특별관",`${HALLS.filter(h=>!h.g).length}곳`,"");
 HALLS.forEach((h,i)=>{ if(!h.g) list.appendChild(card(i)); });
-zoneHead("피지컬 존","A·B·C존","특별관 사이사이에 있는 기업 부스 구역입니다. 색은 부스 배치도와 같습니다. 들른 곳만 기록하시면 되고, 스탬프 개수에는 들어가지 않습니다.");
+zoneHead("피지컬 존","A·B·C존","특별관 사이사이에 있는 기업 부스 구역입니다. 색은 부스 배치도와 같습니다.");
 HALLS.forEach((h,i)=>{ if(h.g===1) list.appendChild(card(i)); });
 zoneHead("멀티클라우드관 · 스폰서 구역","MC · M","");
 HALLS.forEach((h,i)=>{ if(h.g===2) list.appendChild(card(i)); });
@@ -592,7 +584,7 @@ $("route").innerHTML=`<li><span class="end">입구 · 오른쪽 아래</span></l
   `<li><span class="end">출구 · 왼쪽 아래</span></li>`;
 $("dir").innerHTML=HALLS.map((h,i)=>`<details data-i="${i}"><summary>${badgeHTML(h)}<span>${esc(h.ko)}</span><span class="cnt">${h.b.length}</span></summary>
   <ul>${h.b.map(n=>`<li><button type="button" data-goto="${i}" data-name="${esc(n)}" data-q="${esc(n.toLowerCase())}">${(m=>m?`<b>${esc(m[1])}</b>${esc(m[2])}`:esc(n))(n.match(/^([A-Z]{1,2}-\d{2})\s(.*)$/))}</button></li>`).join("")}</ul></details>`).join("")+
-  `<p class="none" id="dir-none" hidden>찾는 부스가 없습니다. 기록 칸에 직접 추가하실 수 있습니다.</p>`;
+  `<p class="none" id="dir-none" hidden>찾는 부스가 없습니다. 기업명이나 부스 번호를 다시 확인해 주십시오.</p>`;
 function goTo(i,name){
   const el=list.querySelector(`.work[data-i="${i}"]`); if(!el) return;
   const box=el.querySelector(".memo");
@@ -618,7 +610,7 @@ $("find").addEventListener("input",()=>{
 function boothTotal(){ return Object.values(state.booths).reduce((s,a)=>s+a.length,0); }
 function recordKeys(){ return HALLS.map((_,i)=>i).filter(hasRecord); }
 
-const specialDone=()=>state.done.filter(i=>HALLS[i]&&!HALLS[i].g).length;
+const specialDone=()=>state.done.filter(i=>HALLS[i]).length;
 function sync(){
   const n=specialDone();
   $("c-done").textContent=n;
@@ -629,7 +621,7 @@ function sync(){
   const b=$("submit"), h=$("submit-hint");
   b.textContent=`마무리 · 제출 (${n}/${TOTAL})`;
   b.classList.toggle("pending", n===0);
-  h.textContent=n>=TOTAL?"모든 특별관을 돌아보셨습니다":"전부 돌지 않아도 제출할 수 있습니다";
+  h.textContent=n>=TOTAL?"모든 구역을 돌아보셨습니다":"전부 돌지 않아도 제출할 수 있습니다";
 }
 function refreshMemoBox(){
   const n=recordKeys().length, nb=boothTotal();
@@ -658,12 +650,6 @@ function toggleBooth(el,i,name,force){
   el.querySelector(".chips").innerHTML=chipsHTML(i);
   commit(el,i);
 }
-function addBooth(el,i){
-  const inp=el.querySelector(".badd input"), name=inp.value.replace(/\s+/g," ").trim();
-  if(!name){ inp.focus(); return; }
-  toggleBooth(el,i,name,true);
-  inp.value=""; toast(`'${name}'을(를) 기록했습니다`);
-}
 function setRate(el,i,v){
   if(state.rate[i]===v) delete state.rate[i]; else { state.rate[i]=v; setStamp(el,i,true); }
   el.querySelectorAll(".rate button").forEach(b=>{
@@ -683,14 +669,8 @@ list.addEventListener("click",e=>{
       b.setAttribute("aria-expanded",box.classList.contains("open")); break;
     }
     case "chip": toggleBooth(el,i,b.dataset.name); break;
-    case "add": addBooth(el,i); break;
     case "rate": setRate(el,i,b.dataset.v); break;
   }
-});
-list.addEventListener("keydown",e=>{
-  if(e.key!=="Enter"||!e.target.closest(".badd")||e.isComposing) return;
-  e.preventDefault();
-  const el=e.target.closest(".work"); addBooth(el,Number(el.dataset.i));
 });
 list.addEventListener("input",e=>{
   if(e.target.tagName!=="TEXTAREA") return;
@@ -739,10 +719,19 @@ $("reset").addEventListener("click",()=>{
 });
 
 /* ── 제출 ── */
+function openForm(){
+  $("done-panel").hidden=true;
+  $("form-sec").hidden=false;
+  $("form-sec").scrollIntoView({behavior:"smooth",block:"start"});
+}
 $("submit").addEventListener("click",()=>{
-  const t=state.sent&&!$("done-panel").hidden?$("done-panel"):$("form-sec");
-  t.scrollIntoView({behavior:"smooth",block:"start"});
+  if(state.sent) openForm();
+  else $("form-sec").scrollIntoView({behavior:"smooth",block:"start"});
 });
+const afterSent=()=>{
+  $("submit").textContent="수정해서 다시 제출"; $("submit").classList.add("pending");
+  $("submit-hint").textContent=INFO.after;
+};
 $("open-privacy").addEventListener("click",()=>{
   const d=$("privacy"); d.open=true; d.scrollIntoView({behavior:"smooth",block:"center"});
 });
@@ -818,8 +807,8 @@ $("send").addEventListener("click",async()=>{
     if(!out||out.ok!==true) throw new Error(out&&out.error?out.error:"저장 실패");
     state.sent=true; store.set(state);
     showDone(out.updated
-      ? `${payload.name} 교장선생님, 이전 제출 내용을 새 내용으로 바꿨습니다. (특별관 ${payload.stamps}/${payload.total}곳)`
-      : `${payload.name} 교장선생님, 특별관 ${payload.stamps}/${payload.total}곳 기록과 함께 접수되었습니다.`);
+      ? `${payload.name} 교장선생님, 이전 제출 내용을 새 내용으로 바꿨습니다. (관람 ${payload.stamps}/${payload.total}곳)`
+      : `${payload.name} 교장선생님, 관람 ${payload.stamps}/${payload.total}곳 기록과 함께 접수되었습니다.`);
   }catch(err){
     msg.classList.add("err");
     msg.textContent=timedOut
@@ -835,15 +824,10 @@ function showDone(line){
   $("done-line").textContent=line;
   $("done-panel").hidden=false;
   $("done-panel").scrollIntoView({behavior:"smooth",block:"start"});
-  $("submit").textContent="제출 완료 · 집결 안내"; $("submit").classList.remove("pending");
-  $("submit-hint").textContent=`${INFO.gather} · ${INFO.bus}`;
+  afterSent();
 }
 
-$("again").addEventListener("click",()=>{
-  $("done-panel").hidden=true;
-  $("form-sec").hidden=false;
-  $("form-sec").scrollIntoView({behavior:"smooth",block:"start"});
-});
+$("again").addEventListener("click",openForm);
 
 refreshMemoBox();
 sync();
@@ -851,8 +835,7 @@ if(state.sent){
   $("form-sec").hidden=true;
   $("done-panel").hidden=false;
   $("done-line").textContent="이미 제출하셨습니다. 내용을 고치시려면 아래 버튼을 눌러 다시 제출해 주십시오.";
-  $("submit").textContent="제출 완료 · 집결 안내"; $("submit").classList.remove("pending");
-  $("submit-hint").textContent=`${INFO.gather} · ${INFO.bus}`;
+  afterSent();
 }
 </script>
 </body>
